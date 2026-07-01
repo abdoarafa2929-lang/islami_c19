@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:islami_c19/ui/screens/home/tabs/quran/most_recent_sura.dart';
 import 'package:islami_c19/ui/screens/home/tabs/quran/sura_dm.dart';
 import 'package:islami_c19/ui/screens/home/tabs/quran/sura_widget.dart';
 import 'package:islami_c19/ui/utils/app_colors.dart';
@@ -23,11 +24,19 @@ class QuranTab extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(flex: 2, child: Image.asset(AppAssets.islamiLogo)),
+          Image.asset(AppAssets.islamiLogo),
           SizedBox(
             height: 20,
           ),
           buildSearchTextField(),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            "Most recent suras",
+            style: AppTextStyles.white14Bold,
+          ),
+          Expanded(flex: 4, child: buildMostRecentSurasList()),
           SizedBox(
             height: 10,
           ),
@@ -35,19 +44,17 @@ class QuranTab extends StatelessWidget {
             "Suras List",
             style: AppTextStyles.white14Bold,
           ),
-          buildSurasListView(),
+          Expanded(flex: 6, child: buildSurasListView()),
         ],
       ),
     );
   }
 
-  Expanded buildSurasListView() => Expanded(
-      flex: 8,
-      child: ListView.separated(
+  Widget buildSurasListView() => ListView.separated(
         itemCount: 114,
         itemBuilder: (_, index) => SuraWidget(suras[index]),
         separatorBuilder: (_, index) => Divider(),
-      ));
+      );
 
   buildSearchTextField() => TextField(
         decoration: InputDecoration(
@@ -65,4 +72,12 @@ class QuranTab extends StatelessWidget {
         style: AppTextStyles.white16Bold,
         cursorColor: AppColors.gold,
       );
+
+  Widget buildMostRecentSurasList() {
+    return ListView.builder(
+        itemCount: 50,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) =>
+            MostRecentSuraWidget(suraDM: suras[9]));
+  }
 }
