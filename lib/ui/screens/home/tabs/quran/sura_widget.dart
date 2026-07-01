@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:islami_c19/ui/screens/home/tabs/quran/sura_dm.dart';
 import 'package:islami_c19/ui/utils/app_assets.dart';
+import 'package:islami_c19/ui/utils/app_routes.dart';
 import 'package:islami_c19/ui/utils/app_text_styles.dart';
 
 class SuraWidget extends StatefulWidget {
@@ -15,35 +16,40 @@ class SuraWidget extends StatefulWidget {
 class SuraWidgetState extends State<SuraWidget> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        buildSuraNumber(),
-        SizedBox(
-          width: 24,
-        ),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.sura.suraNameEn,
-                style: AppTextStyles.white20Bold,
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Text(
-                "${widget.sura.verses} verses",
-                style: AppTextStyles.white16Bold,
-              ),
-            ],
+    return InkWell(
+      onTap: () {
+        Navigator.push(context, AppRoutes.suraDetailsRoute(widget.sura));
+      },
+      child: Row(
+        children: [
+          buildSuraNumber(),
+          SizedBox(
+            width: 24,
           ),
-        ),
-        Text(
-          widget.sura.suraNameAr,
-          style: AppTextStyles.white20Bold,
-        )
-      ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.sura.suraNameEn,
+                  style: AppTextStyles.white20Bold,
+                ),
+                SizedBox(
+                  height: 4,
+                ),
+                Text(
+                  "${widget.sura.verses} verses",
+                  style: AppTextStyles.white16Bold,
+                ),
+              ],
+            ),
+          ),
+          Text(
+            widget.sura.suraNameAr,
+            style: AppTextStyles.white20Bold,
+          )
+        ],
+      ),
     );
   }
 

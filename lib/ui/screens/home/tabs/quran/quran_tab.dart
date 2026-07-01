@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:islami_c19/ui/screens/home/tabs/quran/sura_dm.dart';
 import 'package:islami_c19/ui/screens/home/tabs/quran/sura_widget.dart';
 import 'package:islami_c19/ui/utils/app_colors.dart';
+import 'package:islami_c19/ui/utils/app_constants.dart';
 import 'package:islami_c19/ui/utils/app_text_styles.dart';
 
 import '../../../../utils/app_assets.dart';
@@ -44,12 +45,7 @@ class QuranTab extends StatelessWidget {
       flex: 8,
       child: ListView.separated(
         itemCount: 114,
-        itemBuilder: (_, index) => SuraWidget(SuraDM(
-          index: 1,
-          suraNameAr: "الفاتحه",
-          suraNameEn: "Al Fatiha",
-          verses: 7,
-        )),
+        itemBuilder: (_, index) => SuraWidget(suras[index]),
         separatorBuilder: (_, index) => Divider(),
       ));
 
