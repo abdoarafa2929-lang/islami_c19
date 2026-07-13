@@ -5,6 +5,7 @@ import 'package:islami_c19/ui/screens/home/tabs/quran/sura_widget.dart';
 import 'package:islami_c19/ui/screens/home/tabs/quran/widgets/search_field.dart';
 import 'package:islami_c19/ui/utils/app_constants.dart';
 import 'package:islami_c19/ui/utils/app_text_styles.dart';
+import 'package:islami_c19/ui/utils/shared_pref_services.dart';
 
 import '../../../../utils/app_assets.dart';
 
@@ -17,6 +18,8 @@ class QuranTab extends StatefulWidget {
 
 class _QuranTabState extends State<QuranTab> {
   List<SuraDM> searchableList = [];
+  List<SuraDM> mostRecentList = [];
+
   String searchText = "";
 
   @override
@@ -24,6 +27,8 @@ class _QuranTabState extends State<QuranTab> {
     for (var sura in suras) {
       searchableList.add(sura);
     }
+
+    SharedPrefServices.getMostRecentList(mostRecentList);
     super.initState();
   }
 
@@ -41,23 +46,24 @@ class _QuranTabState extends State<QuranTab> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SafeArea(child: Image.asset(AppAssets.islamiLogo)),
-          const SizedBox(height: 20),
           SearchField(onChanged: _search),
           if (searchText.isEmpty) ...[
-            const SizedBox(height: 20),
+            if (mostRecentList.isNotEmpty) ...[
+              const SizedBox(height: 20),
+              Text(
+                "Most recent suras",
+                style: AppTextStyles.white14Bold,
+              ),
+              Expanded(flex: 42, child: buildMostRecentSurasList()),
+            ],
+            const SizedBox(height: 10),
             Text(
-              "Most recent suras",
+              "Suras List",
               style: AppTextStyles.white14Bold,
             ),
-            Expanded(flex: 4, child: buildMostRecentSurasList()),
           ],
-          const SizedBox(height: 10),
-          Text(
-            "Suras List",
-            style: AppTextStyles.white14Bold,
-          ),
           Expanded(
-              flex: 6,
+              flex: 58,
               child: searchText.isNotEmpty && searchableList.isEmpty
                   ? Center(
                       child: Text(
@@ -74,15 +80,27 @@ class _QuranTabState extends State<QuranTab> {
   Widget buildSurasListView() => ListView.separated(
         itemCount: searchableList.length,
         padding: EdgeInsets.symmetric(vertical: 8),
-        itemBuilder: (_, index) => SuraWidget(searchableList[index]),
-        separatorBuilder: (_, index) => Divider(),
+        itemBuilder: (_, index) => SuraWidget(
+          searchableList[index],
+          onSuraClicked: () {
+            SharedPrefServices.setSuraToMostrecent(
+              searchableList[index],
+              mostRecentList,
+            );
+
+            setState(() {});
+          },
+        ),
+        separatorBuilder: (_, index) => const Divider(),
       );
 
   Widget buildMostRecentSurasList() {
     return ListView.builder(
-      itemCount: 50,
+      itemCount: mostRecentList.length,
       scrollDirection: Axis.horizontal,
-      itemBuilder: (context, index) => MostRecentSuraWidget(suraDM: suras[9]),
+      itemBuilder: (context, index) => MostRecentSuraWidget(
+        suraDM: mostRecentList[index],
+      ),
     );
   }
 

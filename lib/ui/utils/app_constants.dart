@@ -1,5 +1,7 @@
 import '../screens/home/tabs/quran/sura_dm.dart';
 
+const String mostRecentKey = 'most-recent';
+
 List<String> arabicQuranSuras = [
   "الفاتحه",
   "البقرة",
@@ -351,7 +353,7 @@ List<String> ayaNumber = [
 
 List<SuraDM> suras = List.generate(114, (index) {
   return SuraDM(
-      index: index +1,
+      index: index + 1,
       suraNameEn: englishQuranSuras[index],
       verses: int.parse(ayaNumber[index]),
       suraNameAr: arabicQuranSuras[index]);

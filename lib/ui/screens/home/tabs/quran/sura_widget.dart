@@ -6,8 +6,8 @@ import 'package:islami_c19/ui/utils/app_text_styles.dart';
 
 class SuraWidget extends StatefulWidget {
   final SuraDM sura;
-
-  const SuraWidget(this.sura, {super.key});
+  final void Function() onSuraClicked;
+  const SuraWidget(this.sura, {super.key, required this.onSuraClicked});
 
   @override
   State<SuraWidget> createState() => SuraWidgetState();
@@ -19,6 +19,7 @@ class SuraWidgetState extends State<SuraWidget> {
     return InkWell(
       onTap: () {
         Navigator.push(context, AppRoutes.suraDetailsRoute(widget.sura));
+        widget.onSuraClicked();
       },
       child: Row(
         children: [
