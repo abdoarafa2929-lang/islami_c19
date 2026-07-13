@@ -2,14 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:islami_c19/ui/screens/home/tabs/quran/most_recent_sura.dart';
 import 'package:islami_c19/ui/screens/home/tabs/quran/sura_dm.dart';
 import 'package:islami_c19/ui/screens/home/tabs/quran/sura_widget.dart';
-import 'package:islami_c19/ui/utils/app_colors.dart';
+import 'package:islami_c19/ui/screens/home/tabs/quran/widgets/search_field.dart';
 import 'package:islami_c19/ui/utils/app_constants.dart';
 import 'package:islami_c19/ui/utils/app_text_styles.dart';
 
 import '../../../../utils/app_assets.dart';
 
-class QuranTab extends StatelessWidget {
+class QuranTab extends StatefulWidget {
   const QuranTab({super.key});
+
+  @override
+  State<QuranTab> createState() => _QuranTabState();
+}
+
+class _QuranTabState extends State<QuranTab> {
+  List<SuraDM> searchableList = [];
+  String searchText = "";
+
+  @override
+  void initState() {
+    for (var sura in suras) {
+      searchableList.add(sura);
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,60 +40,61 @@ class QuranTab extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Image.asset(AppAssets.islamiLogo),
-          SizedBox(
-            height: 20,
-          ),
-          buildSearchTextField(),
-          SizedBox(
-            height: 20,
-          ),
-          Text(
-            "Most recent suras",
-            style: AppTextStyles.white14Bold,
-          ),
-          Expanded(flex: 4, child: buildMostRecentSurasList()),
-          SizedBox(
-            height: 10,
-          ),
+          SafeArea(child: Image.asset(AppAssets.islamiLogo)),
+          const SizedBox(height: 20),
+          SearchField(onChanged: _search),
+          if (searchText.isEmpty) ...[
+            const SizedBox(height: 20),
+            Text(
+              "Most recent suras",
+              style: AppTextStyles.white14Bold,
+            ),
+            Expanded(flex: 4, child: buildMostRecentSurasList()),
+          ],
+          const SizedBox(height: 10),
           Text(
             "Suras List",
             style: AppTextStyles.white14Bold,
           ),
-          Expanded(flex: 6, child: buildSurasListView()),
+          Expanded(
+              flex: 6,
+              child: searchText.isNotEmpty && searchableList.isEmpty
+                  ? Center(
+                      child: Text(
+                        'No sura found has name: $searchText',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  : buildSurasListView()),
         ],
       ),
     );
   }
 
   Widget buildSurasListView() => ListView.separated(
-        itemCount: 114,
-        itemBuilder: (_, index) => SuraWidget(suras[index]),
+        itemCount: searchableList.length,
+        padding: EdgeInsets.symmetric(vertical: 8),
+        itemBuilder: (_, index) => SuraWidget(searchableList[index]),
         separatorBuilder: (_, index) => Divider(),
-      );
-
-  buildSearchTextField() => TextField(
-        decoration: InputDecoration(
-            labelText: "Sura name",
-            labelStyle: AppTextStyles.white16Bold,
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: AppColors.gold)),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: AppColors.gold)),
-            enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: AppColors.gold))),
-        style: AppTextStyles.white16Bold,
-        cursorColor: AppColors.gold,
       );
 
   Widget buildMostRecentSurasList() {
     return ListView.builder(
-        itemCount: 50,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) =>
-            MostRecentSuraWidget(suraDM: suras[9]));
+      itemCount: 50,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (context, index) => MostRecentSuraWidget(suraDM: suras[9]),
+    );
+  }
+
+  void _search(String suraName) {
+    searchText = suraName;
+    searchableList = suras
+        .where((sura) =>
+            sura.suraNameEn.toLowerCase().contains(suraName.toLowerCase()) ||
+            sura.suraNameAr.contains(suraName))
+        .toList();
+
+    // log(searchableList.toString());
+    setState(() {});
   }
 }

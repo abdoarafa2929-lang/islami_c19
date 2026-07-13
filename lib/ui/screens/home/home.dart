@@ -24,21 +24,18 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: tabs[selectedIndex],
-        bottomNavigationBar: buildBottomNavigationBar(),
-      ),
+    return Scaffold(
+      body: tabs[selectedIndex],
+      bottomNavigationBar: buildBottomNavigationBar(),
     );
   }
-
 
   int selectedIndex = 0;
 
   buildBottomNavigationBar() => BottomNavigationBar(
           selectedItemColor: Colors.white,
           currentIndex: selectedIndex,
-          onTap: (index){
+          onTap: (index) {
             selectedIndex = index;
             setState(() {});
           },
@@ -46,15 +43,24 @@ class _HomeScreenState extends State<HomeScreen> {
           selectedIconTheme: IconThemeData(color: Colors.white, size: 32),
           items: [
             BottomNavigationBarItem(
-                icon: buildNavigationIcon(AppAssets.icQuran, selectedIndex == 0), label: 'Quran'),
+                icon:
+                    buildNavigationIcon(AppAssets.icQuran, selectedIndex == 0),
+                label: 'Quran'),
             BottomNavigationBarItem(
-                icon: buildNavigationIcon(AppAssets.icHadeth, selectedIndex == 1), label: 'Hadeth'),
+                icon:
+                    buildNavigationIcon(AppAssets.icHadeth, selectedIndex == 1),
+                label: 'Hadeth'),
             BottomNavigationBarItem(
-                icon: buildNavigationIcon(AppAssets.icSebha, selectedIndex == 2), label: 'Sebha'),
+                icon:
+                    buildNavigationIcon(AppAssets.icSebha, selectedIndex == 2),
+                label: 'Sebha'),
             BottomNavigationBarItem(
-                icon: buildNavigationIcon(AppAssets.icRadio, selectedIndex == 3), label: 'Radio'),
+                icon:
+                    buildNavigationIcon(AppAssets.icRadio, selectedIndex == 3),
+                label: 'Radio'),
             BottomNavigationBarItem(
-                icon: buildNavigationIcon(AppAssets.icTime, selectedIndex == 4), label: 'Times'),
+                icon: buildNavigationIcon(AppAssets.icTime, selectedIndex == 4),
+                label: 'Times'),
           ]);
 
   Widget buildNavigationIcon(String path, bool selected) => Container(

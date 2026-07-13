@@ -4,8 +4,15 @@ class SuraDM {
   int verses;
   String suraNameAr;
 
-  SuraDM({required this.index,
+  SuraDM({
+    required this.index,
     required this.suraNameEn,
     required this.verses,
-    required this.suraNameAr});
+    required this.suraNameAr,
+  });
+
+  @override
+  String toString() {
+    return 'Sura Name: $suraNameEn';
+  }
 }
