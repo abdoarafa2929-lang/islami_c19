@@ -1,17 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:islami_c19/ui/screens/home/tabs/ahadeth/model/hadeeth_model.dart';
 import 'package:islami_c19/ui/utils/app_colors.dart';
 import '../../../../utils/app_assets.dart';
 import '../../../../utils/app_text_styles.dart';
 
-class AhadethTab extends StatefulWidget {
+class AhadethTab extends StatelessWidget {
   const AhadethTab({super.key});
 
-  @override
-  State<AhadethTab> createState() => _AhadethTabState();
-}
-
-class _AhadethTabState extends State<AhadethTab> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,73 +22,105 @@ class _AhadethTabState extends State<AhadethTab> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Image.asset(AppAssets.islamiLogo),
-          Expanded(child: buildAhadethCarousel())
+          Expanded(
+              child: CarouselSlider.builder(
+            options: CarouselOptions(
+              autoPlay: false,
+              height: double.infinity,
+              enlargeCenterPage: true,
+              reverse: true,
+            ),
+            itemCount: 50,
+            itemBuilder: (context, index, realIndex) {
+              print("index: $index, realIndex: $realIndex");
+              return HadeethCard(index: index);
+            },
+          ))
+        ],
+      ),
+    );
+  }
+}
+
+class HadeethCard extends StatefulWidget {
+  final int index;
+  const HadeethCard({super.key, required this.index});
+
+  @override
+  State<HadeethCard> createState() => _HadeethCardState();
+}
+
+class _HadeethCardState extends State<HadeethCard> {
+  HadeethModel hadeethModel = HadeethModel(content: "", title: "");
+  @override
+  void initState() {
+    readHadeethContent();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      height: double.infinity,
+      decoration: BoxDecoration(
+          color: AppColors.gold, borderRadius: BorderRadius.circular(20)),
+      child: Column(
+        children: [
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image.asset(
+                    AppAssets.imgLeftCorner,
+                    color: AppColors.black,
+                    width: 92,
+                  ),
+                  Image.asset(
+                    AppAssets.imgRightCorner,
+                    color: AppColors.black,
+                    width: 92,
+                  ),
+                ],
+              ),
+              Text(
+                hadeethModel.title,
+                style: AppTextStyles.black24Bold,
+              ),
+            ],
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Center(
+                  child: Text(
+                hadeethModel.content,
+                textAlign: TextAlign.center,
+                textDirection: TextDirection.rtl,
+                style: AppTextStyles.black14Bold,
+              )),
+            ),
+          ),
+          Image.asset(
+            AppAssets.imgMosque,
+            color: AppColors.black,
+          ),
         ],
       ),
     );
   }
 
-  buildAhadethCarousel() => CarouselSlider.builder(
-        options: CarouselOptions(
-          autoPlay: false,
-          height: double.infinity,
-          enlargeCenterPage: true,
-        ),
-        itemCount: 50,
-        itemBuilder: (context, index, realIndex) {
-          print("index: $index, realIndex: $realIndex");
-          return buildHadethWidget();
-        },
-      );
+  Future<void> readHadeethContent() async {
+    final String filePath = 'assets/files/Hadeeth/h${widget.index + 1}.txt';
+    final String fileContent = await rootBundle.loadString(filePath);
+    final List<String> lines = fileContent.split('\n');
+    final title = lines[0];
+    lines.removeAt(0);
+    final String content = lines.join('');
+    hadeethModel = HadeethModel(content: content, title: title);
 
-  buildHadethWidget() => Container(
-        margin: EdgeInsets.only(bottom: 12),
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        height: double.infinity,
-        decoration: BoxDecoration(
-            color: AppColors.gold, borderRadius: BorderRadius.circular(20)),
-        child: Column(
-          children: [
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Image.asset(
-                      AppAssets.imgLeftCorner,
-                      color: AppColors.black,
-                      width: 92,
-                    ),
-                    Image.asset(
-                      AppAssets.imgRightCorner,
-                      color: AppColors.black,
-                      width: 92,
-                    ),
-                  ],
-                ),
-                Text(
-                  "الحد يث الأول",
-                  style: AppTextStyles.black24Bold,
-                ),
-              ],
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Center(
-                    child: Text(
-                  " عن أمـيـر المؤمنـين أبي حـفص عمر بن الخطاب رضي الله عنه ، قال : سمعت رسول الله صلى الله عـليه وسلم يـقـول : ( إنـما الأعـمـال بالنيات وإنـمـا لكـل امـرئ ما نـوى . فمن كـانت هجرته إلى الله ورسولـه فهجرتـه إلى الله ورسـوله ومن كانت هجرته لـدنيا يصـيبها أو امرأة ينكحها فهجرته إلى ما هاجر إليه ).رواه إمام المحد ثين أبـو عـبـد الله محمد بن إسماعـيل بن ابراهـيـم بن المغـيره بن بـرد زبه البخاري الجعـفي،[رقم:1] وابـو الحسـيـن مسلم بن الحجاج بن مـسلم القـشـيري الـنيسـابـوري [رقم :1907] رضي الله عنهما في صحيحيهما اللذين هما أصح الكتب المصنفه.",
-                  textAlign: TextAlign.center,
-                  textDirection: TextDirection.rtl,
-                  style: AppTextStyles.black14Bold,
-                )),
-              ),
-            ),
-            Image.asset(
-              AppAssets.imgMosque,
-              color: AppColors.black,
-            ),
-          ],
-        ),
-      );
+    setState(() {});
+  }
 }
