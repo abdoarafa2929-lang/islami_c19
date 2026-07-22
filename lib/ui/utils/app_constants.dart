@@ -1,7 +1,7 @@
 import '../screens/home/tabs/quran/sura_dm.dart';
 
 const String mostRecentKey = 'most-recent';
-
+const String tasbeh = 'سَبِّحِ اسْمَ رَبِّكَ الأعلى ';
 List<String> arabicQuranSuras = [
   "الفاتحه",
   "البقرة",
@@ -350,6 +350,15 @@ List<String> ayaNumber = [
   '5',
   '6'
 ];
+const String title1 = 'Welcome To Islami App';
+const String title2 =
+    'Welcome To Islami\n\nWe Are Very Excited To Have You In Our Community';
+const String title3 =
+    'Reading the Quran\n\nRead, and your Lord is the Most Generous We Are Very Excited To Have You In Our Community';
+const String title4 =
+    'Bearish \n\nPraise the name of your Lord, the Most High ';
+const String title5 =
+    'Holy Quran Radio\n\nYou can listen to the Holy Quran Radio through the application for free and easily';
 
 List<SuraDM> suras = List.generate(114, (index) {
   return SuraDM(

@@ -16,4 +16,12 @@ abstract final class AppAssets {
   static const String imgLeftCorner = '$_imagesPath/img_left_corner.png';
   static const String imgRightCorner = '$_imagesPath/img_right_corner.png';
   static const String imgMosque = '$_imagesPath/img_mosque.png';
+  static const String imgKabba = '$_imagesPath/kabba.png';
+  static const String imgRadio = '$_imagesPath/radio.png';
+  static const String imgReading = '$_imagesPath/reading.png';
+  static const String imgWelcome = '$_imagesPath/welcome.png';
+  static const String imgBearish= '$_imagesPath/bearish.png';
+  static const String imgGroup = '$_imagesPath/Group.png';
+  static const String sebhaBody = '$_imagesPath/SebhaBody.png';
+  static const String sebhaBackground = '$_imagesPath/SebhaBackground.png';
 }
