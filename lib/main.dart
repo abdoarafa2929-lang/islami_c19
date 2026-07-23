@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:islami_c19/ui/screens/home/home.dart';
+import 'package:islami_c19/ui/screens/onboarding/onboarding.dart';
 import 'package:islami_c19/ui/utils/app_colors.dart';
 import 'package:islami_c19/ui/utils/shared_pref_services.dart';
 
@@ -16,10 +16,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         canvasColor: AppColors.gold,
       ),
-      home: HomeScreen(),
+      home: Onboarding(),
     );
   }
 }
